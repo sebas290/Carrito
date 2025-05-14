@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tienda Dino</title>
+</head>
+<body>
+    {% if messages %}
+        {% for message in messages %}
+            <div>{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    
+    <h1>Productos Disponibles</h1>
+    {% for producto in productos %}
+    <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+        <img src="{{ producto.imagen.url }}" width="100">
+        <h3>{{ producto.nombre }}</h3>
+        <p>${{ producto.precio }} | Stock: {{ producto.stock }}</p>
+        <form action="{% url 'agregar_al_carrito' producto.id %}" method="post">
+            {% csrf_token %}
+            <input type="number" name="cantidad" value="1" min="1" max="{{ producto.stock }}">
+            <button type="submit">Añadir al Carrito</button>
+        </form>
+    </div>
+    {% endfor %}
+    <a href="{% url 'ver_carrito' %}" style="font-size:1.2em;">🛒 Ver Carrito</a>
+</body>
+</html>
